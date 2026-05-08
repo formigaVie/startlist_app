@@ -1,64 +1,85 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Startlisten-Tool</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<meta charset="UTF-8">
+<title>Startlisten Tool v6</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body{font-family:Arial,sans-serif;margin:20px;}
+.flex{display:flex;gap:20px;align-items:flex-start;}
+label{display:block;margin-bottom:10px;}
+table{border-collapse:collapse;width:100%;margin-top:20px;}
+table,th,td{border:1px solid #ccc;}
+th,td{padding:6px;font-size:12px;}
+th{background:#f0f0f0;}
+button{padding:8px 12px;cursor:pointer;}
+</style>
 </head>
 <body>
-  <h1>Startlisten-Tool (PDF → Startzeiten)</h1>
 
-  <section>
-    <h2>1️⃣ Startliste hochladen</h2>
-    <input type="file" id="startlistFile" accept="application/pdf">
-    <input type="text" id="startlistURL" placeholder="oder PDF-Link einfügen">
-    <button onclick="loadStartlist()">Startliste laden</button>
-    <div id="dropZone">📥 PDF hierher ziehen</div>
-  </section>
+<h1>Startlisten Tool v6</h1>
 
-  <section>
-    <h2>2️⃣ Zeitplan-PDF hochladen</h2>
-    <input type="file" id="programFile" accept="application/pdf">
-    <input type="text" id="programURL" placeholder="oder Programm-PDF-Link">
-    <button onclick="loadProgram()">Programm laden</button>
-  </section>
+<h2>Programm</h2>
+<div class="flex">
+<div>
+<label>Programm PDF Upload</label>
+<input type="file" id="programInput">
+</div>
 
-  <section>
-    <h2>3️⃣ Dauer pro Kategorie (Sekunden)</h2>
-    <table>
-      <tr><td>Solo:</td><td><input type="number" id="durSolo" value="100"></td></tr>
-      <tr><td>Duo/Trio/Quartet:</td><td><input type="number" id="durDuo" value="120"></td></tr>
-      <tr><td>Group:</td><td><input type="number" id="durGroup" value="180"></td></tr>
-      <tr><td>Formation:</td><td><input type="number" id="durFormation" value="240"></td></tr>
-      <tr><td>Production Number:</td><td><input type="number" id="durProduction" value="270"></td></tr>
-    </table>
-  </section>
+<div>
+<label>Programm PDF Link</label>
+<input type="text" id="programLink" placeholder="Programm PDF URL">
+<button onclick="loadProgramFromLink()">Laden</button>
+</div>
+</div>
 
-  <section>
-    <h2>🔍 Verein filtern</h2>
-    <select id="schoolFilter" onchange="filterTable()">
-      <option value="alle">Alle</option>
-    </select>
-    <button onclick="exportPDF()">📤 Als PDF exportieren</button>
-  </section>
+<h2>Startliste</h2>
+<div class="flex">
+<div>
+<label>Startlisten PDF Upload</label>
+<input type="file" id="startlistInput">
+</div>
 
-  <section id="startlistSection">
-    <h2>📋 Startliste</h2>
-    <table id="dataTable">
-      <thead>
-        <tr>
-          <th>#</th><th>Routine</th><th>Schule</th><th>Disziplin</th><th>Kategorie</th><th>Startzeit</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <tr><td colspan="6">Noch keine Daten geladen</td></tr>
-      </tbody>
-    </table>
-  </section>
+<div>
+<label>Startlisten PDF Link</label>
+<input type="text" id="pdfLink" placeholder="Startlisten PDF URL">
+<button onclick="loadFromLink()">Laden</button>
+</div>
+</div>
 
-  <script src="main.js"></script>
+<h2>Kategorie Dauer (Sekunden)</h2>
+
+<label>Solo <input id="durSOLO" type="number" value="100"></label>
+<label>Duo/Trio/Quartet <input id="durDUO" type="number" value="120"></label>
+<label>Group <input id="durGROUP" type="number" value="180"></label>
+<label>Formation <input id="durFORMATION" type="number" value="240"></label>
+<label>Production Number <input id="durPROD" type="number" value="270"></label>
+
+<button onclick="renderTable()">Neu berechnen</button>
+<button onclick="exportPDF()">PDF Export</button>
+
+<h2>Startreihenfolge</h2>
+
+<table id="dataTable">
+<thead>
+<tr>
+<th>Datum</th>
+<th>#</th>
+<th>Routine</th>
+<th>Schule</th>
+<th>Disziplin</th>
+<th>Kategorie</th>
+<th>Startzeit</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+
+<script src="main.js"></script>
+
 </body>
 </html>
