@@ -346,28 +346,41 @@ function renderTable(){
 // =========================
 // TIME HELPER
 // =========================
-     function timeAdd(t, seconds){
+function timeAdd(t, seconds){
 
   let [h,m] = t.split(":").map(Number);
 
-  let totalSeconds =
-    h * 3600 +
-    m * 60 +
+  // aktuelle Zeit in Sekunden
+  let total =
+    (h * 3600) +
+    (m * 60) +
     seconds;
 
+  // neue Stunden
   let newH =
-    Math.floor(totalSeconds / 3600);
+    Math.floor(total / 3600);
 
+  // Restsekunden nach Stunden
+  let remain =
+    total % 3600;
+
+  // Minuten korrekt berechnen
   let newM =
-    Math.floor((totalSeconds % 3600) / 60);
+    Math.floor(remain / 60);
+
+  // Sicherheit gegen >59
+  if(newM >= 60){
+
+    newH += Math.floor(newM / 60);
+    newM = newM % 60;
+  }
 
   return (
-    ("0"+newH).slice(-2)
+    String(newH).padStart(2,"0")
     + ":"
-    + ("0"+newM).slice(-2)
+    + String(newM).padStart(2,"0")
   );
 }
-
 // =========================
 // PDF EXPORT
 // =========================
