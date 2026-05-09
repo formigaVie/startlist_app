@@ -326,6 +326,7 @@ function renderTable(){
 
     let dur =
       durations[normalize(e.kategorie)] || 120;
+    dur = parseInt(dur);
 
     times[disKey] =
   timeAdd(start, dur);
