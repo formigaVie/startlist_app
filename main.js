@@ -181,7 +181,7 @@ async function parseStartlist(file){
           if(schoolMatch)
             schule = schoolMatch[1];
           if(startEntries.some(e => e.nr === nr))
-          return;
+          continue;
           startEntries.push({
             nr,
             routine: block,
@@ -302,18 +302,17 @@ function renderTable(){
 
   startEntries.forEach(e=>{
 
-   let disKey = Object.keys(disziplinZeiten)
+let disKey = Object.keys(disziplinZeiten)
   .find(k =>
-    normalize(e.routine).includes(k) ||
-    normalize(e.disziplin).includes(k)
+    normalize(e.routine).includes(k)
   );
 
-    if(!disKey){
+// Fallback
+if(!disKey){
 
-      disKey = Object.keys(disziplinZeiten)[0];
-
-      if(!disKey) return;
-    }
+  disKey =
+    Object.keys(disziplinZeiten)[0];
+}
 
     let datum =
       disziplinZeiten[disKey]?.datum || "";
