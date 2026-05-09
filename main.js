@@ -180,16 +180,19 @@ async function parseStartlist(file){
 
           if(schoolMatch)
             schule = schoolMatch[1];
-          if(startEntries.some(e => e.nr === nr))
-          continue;
-          startEntries.push({
-            nr,
-            routine: block,
-            schule,
-            disziplin,
-            kategorie
-          });
-        }
+          const exists =
+          startEntries.find(e => e.nr === nr);
+
+        if(!exists){
+
+        startEntries.push({
+         nr,
+         routine: block,
+         schule,
+         disziplin,
+        kategorie
+  });
+}
 
         console.log("🔥 Einträge erkannt:", startEntries.length);
         console.log(startEntries);
@@ -307,7 +310,6 @@ let disKey = Object.keys(disziplinZeiten)
     normalize(e.routine).includes(k)
   );
 
-// Fallback
 if(!disKey){
 
   disKey =
