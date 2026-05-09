@@ -327,7 +327,7 @@ function renderTable(){
       durations[normalize(e.kategorie)] || 120;
 
     times[disKey] =
-      timeAdd(start, dur / 60);
+  timeAdd(start, dur);
 
     tbody.innerHTML += `
       <tr>
@@ -345,16 +345,25 @@ function renderTable(){
 // =========================
 // TIME HELPER
 // =========================
-function timeAdd(t,min){
+     function timeAdd(t, seconds){
 
   let [h,m] = t.split(":").map(Number);
 
-  let total = h*60 + m + min;
+  let totalSeconds =
+    h * 3600 +
+    m * 60 +
+    seconds;
+
+  let newH =
+    Math.floor(totalSeconds / 3600);
+
+  let newM =
+    Math.floor((totalSeconds % 3600) / 60);
 
   return (
-    ("0"+Math.floor(total/60)).slice(-2)
+    ("0"+newH).slice(-2)
     + ":"
-    + ("0"+(total%60)).slice(-2)
+    + ("0"+newM).slice(-2)
   );
 }
 
