@@ -105,7 +105,7 @@ async function parseStartlist(file){
         const pdf = await pdfjsLib.getDocument({
           data:new Uint8Array(reader.result)
         }).promise;
-
+        
         startEntries = [];
 
         let fullText = "";
@@ -180,7 +180,8 @@ async function parseStartlist(file){
 
           if(schoolMatch)
             schule = schoolMatch[1];
-
+          if(startEntries.some(e => e.nr === nr))
+          return;
           startEntries.push({
             nr,
             routine: block,
